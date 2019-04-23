@@ -78,9 +78,10 @@ def test(model,device,test_loader):
 
 if __name__=="__main__":
 
-    learning_rate=0.01
+    learning_rate=0.001
     amsgrad=False
-    epochs=2
+    epochs=10
+
 
     minst_tranform=transforms.Compose([transforms.ToTensor(),
                                        transforms.Normalize((0.1307,), (0.3081,))])
@@ -97,8 +98,11 @@ if __name__=="__main__":
     test_loader=torch.utils.data.DataLoader(test_minst,batch_size=256,shuffle=False)
 
     model=minstNet().to(device)
-    optimizer=optim.Adam(model.parameters(),lr=learning_rate,amsgrad=amsgrad)
     loss_function = nn.NLLLoss()
+    # optimizer = optim.SGD(model.parameters(), lr=learning_rate, momentum=0.5)
+    optimizer=optim.Adam(model.parameters(),lr=learning_rate,amsgrad=amsgrad)
+
+
     for epoch in range(1, epochs+1):
         train(model, device, train_loader, optimizer=optimizer, epoch=epoch, loss_function=loss_function)
         test(model,device,test_loader)
